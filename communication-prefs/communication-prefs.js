@@ -5,12 +5,13 @@ module.exports = {
   startDate: '2015-01-01',
   subjectAttributes: ['lang'],
   independentVariables: ['communicationPrefsVisible'],
-  eligibilityFunction: function () {
-    return true;
+  eligibilityFunction: function (subject) {
+    return /^en(:?-US)?/.test(subject.lang);
   },
   groupingFunction: function (subject) {
+    subject.random = subject.random || Math.random()
     return {
-      communicationPrefsVisible: /^en(:?-US)?/.test(subject.lang)
+      communicationPrefsVisible: this.bernoulliTrial(0.1, subject.random)
     };
   }
 };
